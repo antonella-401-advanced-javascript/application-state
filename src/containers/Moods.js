@@ -1,4 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Controls from '../components/controls/Controls';
 import Face from '../components/face/Face';
 
@@ -25,45 +27,53 @@ export const getFace = state => {
   return '😀';
 };
 
-export default class Moods extends Component {
-  state = {
-    coffees: 0,
-    snacks: 0,
-    naps: 0,
-    studies: 0
+const mapDispatchToProps = dispatch => ({
+  handleSelection(name) {
+    dispatch({
+      type: name
+    });
   }
+});
 
-  handleSelection = name => {
-    switch(name) {
-      case 'DRINK_COFFEE':
-        this.setState(state => ({ coffees: state.coffees + 1 }));
-        break;
-      case 'EAT_SNACK':
-        this.setState(state => ({ snacks: state.snacks + 1 }));
-        break;
-      case 'TAKE_NAP':
-        this.setState(state => ({ naps: state.naps + 1 }));
-        break;
-      case 'STUDY':
-        this.setState(state => ({ studies: state.studies + 1 }));
-        break;
-      default:
-        console.log(`unhandled name: ${name}`);
+const Moods = ({ face, coffees, snacks, naps, studies, handleSelection }) => {
+  const controlActions = actions.map(action => ({
+    ...action,
+    count: {
+      coffee: coffees,
+      snack: snacks,
+      nap: naps,
+      study: studies
     }
-  }
+  }));
 
-  render() {
-    const face = getFace(this.state);
-    const controlActions = actions.map(action => ({
-      ...action,
-      count: this.state[action.stateName]
-    }));
+  return (
+    <>
+      <Controls actions={controlActions} handleSelection={handleSelection}/>
+      <Face emoji={face} />
+    </>
+  );
+};
 
-    return (
-      <>
-        <Controls actions={controlActions} handleSelection={this.handleSelection}/>
-        <Face emoji={face} />
-      </>
-    );
-  }
-}
+const mapStateToProps = state => ({
+  coffees: state.coffees,
+  snacks: state.snacks,
+  naps: state.naps,
+  studies: state.studies,
+  face: getFace(state)
+});
+
+const MoodsContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Moods);
+
+Moods.propTypes = {
+  coffees: PropTypes.number.isRequired,
+  snacks: PropTypes.number.isRequired,
+  naps: PropTypes.number.isRequired,
+  studies: PropTypes.number.isRequired,
+  face: PropTypes.string.isRequired,
+  handleSelection: PropTypes.func.isRequired
+};
+
+export default MoodsContainer;
