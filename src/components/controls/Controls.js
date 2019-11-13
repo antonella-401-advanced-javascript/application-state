@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import styles from './Controls.css';
 
 const Controls = ({ actions, handleSelection, handleSave }) => (
-  <div>
+  <div className={styles.Controls}>
     <section>
       <button onClick={() => handleSave(actions)}>SAVE GAME</button>
     </section>
   
-    <section className={styles.Controls}>
+    <section>
       {actions.map(({ name, text, count }) => (
         <button key={name} onClick={() => handleSelection(name)}>
           {text || name} {!!count && `- ${count}`}
