@@ -3,11 +3,11 @@
 ### Author: Antonella Gutierrez
 
 ### About
-Refactored an app that uses basic state management into one that uses the more advanced Redux state management system, with a reducer.
+Refactored mood application so it uses action creators and selectors.
 
 ### Links and Resources
-* [submission PR]()
-* [travis]()
+* [submission PR](https://github.com/antonella-401-advanced-javascript/application-state/pull/2)
+* [travis](https://travis-ci.com/antonella-401-advanced-javascript/application-state/builds/136267390)
 
 ###  Components
 * `Controls.js`
